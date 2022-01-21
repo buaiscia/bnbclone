@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useStoreActions } from 'easy-peasy'
 import Head from 'next/head'
 
 import houses from '../../houses.js'
@@ -19,6 +20,10 @@ const calcNumberOfNightsBetweenDates = (startDate, endDate) => {
 }
 
 export default function House(props) {
+  const setShowLoginModal = useStoreActions(
+    (actions) => actions.modals.setShowLoginModal
+  )
+
   const [dateChosen, setDateChosen] = useState(false)
   const [numberOfNightsBetweenDates, setNumberOfNightsBetweenDates] = useState(0)
 
@@ -53,7 +58,14 @@ export default function House(props) {
                   <p>${props.house.price}</p>
                   <h2>Total price for booking</h2>
                   <p>${(numberOfNightsBetweenDates * props.house.price).toFixed(2)}</p>
-                  <button className="reserve">Reserve</button>
+                  <button
+                    className="reserve"
+                    onClick={() => {
+                      setShowLoginModal()
+                    }}
+                  >
+                    Reserve
+                  </button>
                 </div>
               )
             }
@@ -71,16 +83,6 @@ export default function House(props) {
               padding: 20px;
             }
 
-            button {
-              background-color: rgb(255, 90, 95);
-              color: white;
-              font-size: 13px;
-              width: 100%;
-              border: none;
-              height: 40px;
-              border-radius: 4px;
-              cursor: pointer;
-            }
           `}</style>
         </div>
       }
