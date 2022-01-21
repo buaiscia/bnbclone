@@ -44,7 +44,6 @@ export async function getServerSideProps({ req, res, query }) {
   const bnb_session = cookies.get('bnb_session')
   const houses = await HouseModel.findAndCountAll()
 
-
   return {
     props: {
       bnb_session: bnb_session || null,
