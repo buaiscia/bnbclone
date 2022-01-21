@@ -1,4 +1,4 @@
-import { User, sequelize } from '../../../model.js'
+import { House, User, sequelize } from '../../../model.js'
 import Cookies from 'cookies'
 
 
@@ -7,6 +7,8 @@ const login = async (req, res) => {
     res.status(405).end() //Method Not Allowed
     return
   }
+
+  // House.sync() // create House table in DB on first run
 
   const { email, password } = req.body
 
