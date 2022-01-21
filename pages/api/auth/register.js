@@ -1,11 +1,22 @@
+import { User } from '../../../model.js'
 
-const register = (req, res) => {
+const register = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).end() //Method Not Allowed
     return
   }
-  console.log('POST request received')
-  console.log(req.body)
+
+  const { email, password, passwordconfirmation } = req.body
+
+  if (password !== passwordconfirmation) {
+    res.end(
+      JSON.stringify({ status: 'error', message: 'Passwords do not match' })
+    )
+    return
+  }
+
+  const user = await User.create({ email, password })
+  res.end(JSON.stringify({ status: 'success', message: 'User added' }))
 }
 
 export default register;
