@@ -1,4 +1,5 @@
 import { User } from '../../../model.js'
+import Cookies from 'cookies'
 
 const randomString = (length) => {
   const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -39,6 +40,12 @@ const register = async (req, res) => {
       },
       { where: { email } }
     )
+
+    const cookies = new Cookies(req, res)
+    cookies.set('bnb_session', sessionToken, {
+      httpOnly: true // true by default
+    })
+
     res.end(JSON.stringify({ status: 'success', message: 'User added' }))
   } else {
     res.end(JSON.stringify({ status: 'error', message: 'User already exists' }))

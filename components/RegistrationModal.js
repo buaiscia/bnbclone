@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import { useStoreActions } from 'easy-peasy'
 import axios from 'axios'
-
 
 export default function RegistrationModal(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordconfirmation, setPasswordconfirmation] = useState('')
+
+  const setLoggedIn = useStoreActions((actions) => actions.login.setLoggedIn)
+  const setHideModal = useStoreActions((actions) => actions.modals.setHideModal)
 
   const submit = async () => {
     const response = await axios.post('/api/auth/register', {
@@ -13,7 +16,14 @@ export default function RegistrationModal(props) {
       password,
       passwordconfirmation
     })
-    console.log(response)
+
+    if (response.data.status === 'error') {
+      alert(response.data.message)
+      return
+    }
+
+    setLoggedIn(true)
+    setHideModal(true)
   }
 
   return (
